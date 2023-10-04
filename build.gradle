@@ -1,6 +1,6 @@
 plugins {
 	id 'java-library'
-  id 'scala'
+  	id 'scala'
 	id "org.jetbrains.kotlin.jvm" version "1.6.20"
 	id "com.palantir.git-version" version "0.14.0"
 }
@@ -32,8 +32,8 @@ repositories {
 
 dependencies {
 	implementation 'org.scala-lang:scala-library:2.13.9'
-  testImplementation 'org.scalatest:scalatest_2.13:3.2.0'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+  	testImplementation 'org.scalatest:scalatest_2.13:3.2.0'
+  	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
 	testImplementation 'org.jetbrains.kotlin:kotlin-test'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 	testImplementation 'org.assertj:assertj-core:3.9.2'
@@ -55,7 +55,7 @@ task versionGen {
 tasks.named('jar') {
 	dependsOn versionGen
 	dependsOn test
-  dependsOn scaladoc
+  	dependsOn scaladoc
 	manifest {
 		attributes('Implementation-Title': name,
 				'Implementation-Version': rootProject.version,
@@ -67,15 +67,15 @@ tasks.named('jar') {
 	from('src/main/kotlin') {
 		include '**/*.kt'
 	}
-  from('src/main/scala') {
+  	from('src/main/scala') {
 		include '**/*.scala'
-    include '**/*.java'
+    	include '**/*.java'
 	}
-  from(scaladoc.outputs.files) {
-    include '**'
-    exclude 'hevs/utils/ScalaDocSetup.html'
-    exclude 'index.html'
-  }
+  	from(scaladoc.outputs.files) {
+    	include '**'
+    	exclude 'hevs/utils/ScalaDocSetup.html'
+   		exclude 'index.html'
+  	}
 
 	from("$genDir") {
 		rename {
@@ -101,6 +101,17 @@ task copyJar(type: Copy) {
 javadoc {
     // without the -quiet option, the build fails
     options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+task createScalaDocs(type: ScalaDoc) {
+    // Define source directories
+    source = sourceSets.main.allSource
+
+    // Define classpath
+    classpath = sourceSets.main.runtimeClasspath
+
+    // Output directory for the generated ScalaDoc
+    destinationDir = file("docs")
 }
 
 build.finalizedBy copyJar
