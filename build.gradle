@@ -97,21 +97,25 @@ task copyJar(type: Copy) {
 	into "$buildDir"
 	rename '.*', "$rootProject.name-dev.jar"
 }
+task copyDocs(type: Copy){
+	from scaladoc
+	into "./docs"
+}
 
 javadoc {
     // without the -quiet option, the build fails
     options.addStringOption('Xdoclint:none', '-quiet')
 }
 
-task createScalaDocs(type: ScalaDoc) {
-    // Define source directories
-    source = sourceSets.main.allSource
-
-    // Define classpath
-    classpath = sourceSets.main.runtimeClasspath
-
-    // Output directory for the generated ScalaDoc
-    destinationDir = file("docs")
-}
+//task createScalaDocs(type: ScalaDoc) {
+//    // Define source directories
+//    source = sourceSets.main.allSource
+//
+//    // Define classpath
+//    classpath = sourceSets.main.runtimeClasspath
+//
+//    // Output directory for the generated ScalaDoc
+//    destinationDir = file("docs")
+//}
 
 build.finalizedBy copyJar
